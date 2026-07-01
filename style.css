@@ -55,8 +55,7 @@ section {
   transform: scale(0.97);
 }
 
-#app-view.hidden,
-#home.hidden {
+.hidden {
   display: none;
 }
 
@@ -108,10 +107,6 @@ section {
 .back .example {
   font-style: italic;
   color: #666;
-}
-
-.back.hidden {
-  display: none;
 }
 
 .reveal-btn {
@@ -187,10 +182,6 @@ section {
   cursor: pointer;
 }
 
-#beheer.hidden {
-  display: none;
-}
-
 .add-woord-form {
   display: flex;
   flex-direction: column;
@@ -248,6 +239,23 @@ section {
   font-size: 0.85rem;
 }
 
+.backup-knoppen {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.backup-knoppen button {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: white;
+  color: #444;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
 #toast {
   position: fixed;
   bottom: 20px;
@@ -265,4 +273,15 @@ section {
 #toast.show {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+
+.undo-btn {
+  background: none;
+  border: none;
+  color: #90caf9;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: inherit;
+  padding: 0;
 }

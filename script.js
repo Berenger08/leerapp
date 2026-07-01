@@ -1,3 +1,7 @@
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js'));
+}
+
 const CATEGORIES = [
   {
     id: 'nl-woorden',
@@ -180,11 +184,33 @@ function renderStats() {
     `📚 ${geleerd} geleerd · ${bezig} bezig · ${nieuw} nog te ontdekken`;
 }
 
+let undoTimeout = null;
+
 function showToast(message) {
+  clearTimeout(undoTimeout);
   const toast = document.getElementById('toast');
   toast.textContent = message;
   toast.classList.add('show');
   setTimeout(() => toast.classList.remove('show'), 2200);
+}
+
+function showUndoToast(message, undoFn) {
+  clearTimeout(undoTimeout);
+  const toast = document.getElementById('toast');
+  toast.innerHTML = '';
+  toast.appendChild(document.createTextNode(message + ' '));
+
+  const undoBtn = document.createElement('button');
+  undoBtn.className = 'undo-btn';
+  undoBtn.textContent = 'Ongedaan maken';
+  undoBtn.onclick = () => {
+    undoFn();
+    toast.classList.remove('show');
+  };
+  toast.appendChild(undoBtn);
+
+  toast.classList.add('show');
+  undoTimeout = setTimeout(() => toast.classList.remove('show'), 5000);
 }
 
 function updateItemState(id, action) {
@@ -246,9 +272,14 @@ function addCustomWord(front, back, example) {
 }
 
 function deleteWord(id) {
+  const item = state.items[id];
+  if (!item) return;
+  const snapshot = { ...item };
+  const wasCustom = state.customItems.some(it => it.id === id);
+
   delete state.items[id];
   state.customItems = state.customItems.filter(it => it.id !== id);
-  if (activeCategory.seedItems.some(s => s.id === id) && !state.deletedSeedIds.includes(id)) {
+  if (!wasCustom && !state.deletedSeedIds.includes(id)) {
     state.deletedSeedIds.push(id);
   }
   state.mainWordIds = state.mainWordIds.filter(mid => mid !== id);
@@ -256,6 +287,47 @@ function deleteWord(id) {
   renderStats();
   renderBeheer();
   render();
+
+  showUndoToast(`"${snapshot.front}" verwijderd.`, () => {
+    if (wasCustom) {
+      state.customItems.push({ id: snapshot.id, front: snapshot.front, back: snapshot.back, example: snapshot.example });
+    } else {
+      state.deletedSeedIds = state.deletedSeedIds.filter(did => did !== id);
+    }
+    state.items[id] = snapshot;
+    saveState();
+    renderStats();
+    renderBeheer();
+    render();
+  });
+}
+
+function exportBackup() {
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${activeCategory.id}-backup-${todayStr()}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importBackup(file) {
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const imported = JSON.parse(reader.result);
+      state = imported;
+      saveState();
+      ensureDailyState();
+      render();
+      renderBeheer();
+      showToast('Back-up geïmporteerd!');
+    } catch (e) {
+      showToast('Dit bestand kon niet gelezen worden.');
+    }
+  };
+  reader.readAsText(file);
 }
 
 function renderBeheer() {
@@ -370,7 +442,11 @@ function createCard(item) {
     confirmPress(btnNiet, 'pressed-niet', 'niet');
   };
   btnHerhaal.onclick = () => confirmPress(btnHerhaal, 'pressed-herhaal', 'herhaal');
-  btnKlaar.onclick = () => confirmPress(btnKlaar, 'pressed-klaar', 'klaar');
+  btnKlaar.onclick = () => {
+    if (confirm(`Weet je zeker dat je "${item.front}" niet meer wil herhalen?`)) {
+      confirmPress(btnKlaar, 'pressed-klaar', 'klaar');
+    }
+  };
 
   actions.append(btnNiet, btnHerhaal, btnKlaar);
   card.appendChild(actions);
@@ -437,6 +513,18 @@ document.getElementById('beheer-toggle-btn').addEventListener('click', () => {
   const beheer = document.getElementById('beheer');
   beheer.classList.toggle('hidden');
   if (!beheer.classList.contains('hidden')) renderBeheer();
+});
+
+document.getElementById('export-btn').addEventListener('click', exportBackup);
+
+document.getElementById('import-btn').addEventListener('click', () => {
+  document.getElementById('import-input').click();
+});
+
+document.getElementById('import-input').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (file) importBackup(file);
+  e.target.value = '';
 });
 
 document.getElementById('woord-toevoegen-btn').addEventListener('click', () => {

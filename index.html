@@ -3,8 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#333333">
   <title>Dagelijkse Leerapp</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
 </head>
 <body>
   <header>
@@ -45,6 +47,12 @@
       </div>
 
       <div id="woorden-lijst"></div>
+
+      <div class="backup-knoppen">
+        <button id="export-btn">Exporteer back-up</button>
+        <button id="import-btn">Importeer back-up</button>
+        <input id="import-input" type="file" accept="application/json" class="hidden">
+      </div>
     </section>
   </main>
 

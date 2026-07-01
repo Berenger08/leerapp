@@ -1,103 +1,130 @@
+:root {
+  --color-bg: #f7f5f2;
+  --color-surface: #ffffff;
+  --color-text: #2b2b33;
+  --color-text-muted: #8a8a95;
+  --color-primary: #5b5fef;
+  --color-primary-dark: #4347c4;
+  --color-success: #34b37e;
+  --color-warning: #f2994a;
+  --color-danger: #e5533d;
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+  --shadow-sm: 0 1px 3px rgba(20, 20, 40, 0.06);
+  --shadow-md: 0 6px 20px rgba(20, 20, 40, 0.1);
+}
+
 body {
-  font-family: system-ui, sans-serif;
+  font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
   max-width: 480px;
   margin: 0 auto;
-  padding: 16px;
-  background: #fafafa;
-  color: #222;
+  padding: 20px 16px 60px;
+  background: var(--color-bg);
+  color: var(--color-text);
 }
 
 header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 h1 {
-  font-size: 1.3rem;
-}
-
-#streak {
-  font-size: 0.9rem;
-  color: #555;
-}
-
-#stats {
-  font-size: 0.8rem;
-  color: #888;
-  margin-top: 2px;
-}
-
-h2 {
-  font-size: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #888;
+  font-size: 1.4rem;
+  font-weight: 700;
   margin-bottom: 8px;
 }
 
+#streak {
+  display: inline-block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-warning);
+  background: rgba(242, 153, 74, 0.12);
+  padding: 4px 12px;
+  border-radius: 999px;
+}
+
+#stats {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-top: 8px;
+}
+
+h2 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
 section {
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 }
 
 .card {
-  background: white;
-  border-radius: 12px;
-  padding: 16px;
-  margin-bottom: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow-sm);
+  transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.2s ease;
 }
 
 .card.fading {
   opacity: 0;
-  transform: scale(0.97);
-}
-
-.hidden {
-  display: none;
+  transform: scale(0.96);
 }
 
 .categorie-btn {
   display: block;
   width: 100%;
-  padding: 16px;
-  margin-bottom: 10px;
+  padding: 20px;
+  margin-bottom: 12px;
   border: none;
-  border-radius: 12px;
-  background: white;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  font-size: 1.05rem;
-  font-weight: 600;
+  border-left: 4px solid var(--color-primary);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-text);
+  text-align: left;
   cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .categorie-btn:hover {
-  background: #f0f0f0;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
 #terug-btn {
-  display: block;
-  margin-bottom: 16px;
-  padding: 0;
+  display: inline-block;
+  margin-bottom: 20px;
+  padding: 6px 0;
   border: none;
   background: none;
-  color: #3366cc;
+  color: var(--color-primary);
+  font-weight: 600;
   font-size: 0.9rem;
   cursor: pointer;
 }
 
 .front {
-  font-size: 1.3rem;
-  font-weight: 600;
-  margin-bottom: 8px;
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin-bottom: 10px;
 }
 
 .back {
   font-size: 0.95rem;
-  color: #444;
-  margin-bottom: 10px;
+  color: #555;
+  margin-bottom: 12px;
+  line-height: 1.5;
 }
 
 .back p {
@@ -106,16 +133,19 @@ section {
 
 .back .example {
   font-style: italic;
-  color: #666;
+  color: var(--color-text-muted);
+  border-left: 3px solid rgba(0, 0, 0, 0.08);
+  padding-left: 10px;
 }
 
 .reveal-btn {
   background: none;
   border: none;
-  color: #3366cc;
+  color: var(--color-primary);
+  font-weight: 600;
   font-size: 0.85rem;
   padding: 0;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   cursor: pointer;
   display: block;
 }
@@ -128,146 +158,192 @@ section {
 
 .actions button {
   flex: 1;
-  padding: 8px;
+  padding: 10px 8px;
   border: none;
-  border-radius: 8px;
-  background: #eee;
+  border-radius: var(--radius-sm);
+  background: #f0eee9;
+  color: var(--color-text);
   cursor: pointer;
   font-size: 0.85rem;
+  font-weight: 600;
+  transition: background 0.15s ease, transform 0.1s ease;
 }
 
 .actions button:hover {
-  background: #ddd;
+  background: #e4e1da;
+}
+
+.actions button:active {
+  transform: scale(0.97);
 }
 
 .actions button:disabled {
   cursor: default;
-  opacity: 0.9;
+  opacity: 0.85;
 }
 
 .actions button.pressed-niet {
-  background: #e57373;
+  background: var(--color-danger);
   color: white;
 }
 
 .actions button.pressed-herhaal {
-  background: #64b5f6;
+  background: var(--color-primary);
   color: white;
 }
 
 .actions button.pressed-klaar {
-  background: #81c784;
+  background: var(--color-success);
   color: white;
 }
 
 #nog-een-woord-btn {
-  margin-top: 8px;
-  padding: 8px 14px;
+  margin-top: 10px;
+  padding: 10px 16px;
   border: none;
-  border-radius: 8px;
-  background: #333;
+  border-radius: var(--radius-sm);
+  background: var(--color-primary);
   color: white;
+  font-weight: 600;
   cursor: pointer;
+  box-shadow: 0 2px 8px rgba(91, 95, 239, 0.3);
+}
+
+#nog-een-woord-btn:hover {
+  background: var(--color-primary-dark);
 }
 
 #beheer-toggle-btn {
   display: block;
   width: 100%;
-  margin-bottom: 16px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background: white;
-  color: #444;
+  margin-bottom: 20px;
+  padding: 12px;
+  border: 1px dashed #cfcac0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text-muted);
+  font-weight: 600;
   cursor: pointer;
+}
+
+#beheer-toggle-btn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
 }
 
 .add-woord-form {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-bottom: 16px;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
 .add-woord-form input {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+  padding: 10px 12px;
+  border: 1px solid #ddd8cf;
+  border-radius: var(--radius-sm);
   font-size: 0.9rem;
+  background: var(--color-surface);
+}
+
+.add-woord-form input:focus {
+  outline: none;
+  border-color: var(--color-primary);
 }
 
 #woord-toevoegen-btn {
-  padding: 8px;
+  padding: 10px;
   border: none;
-  border-radius: 8px;
-  background: #333;
+  border-radius: var(--radius-sm);
+  background: var(--color-primary);
   color: white;
+  font-weight: 600;
   cursor: pointer;
+}
+
+#woord-toevoegen-btn:hover {
+  background: var(--color-primary-dark);
 }
 
 .woord-rij {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: white;
-  border-radius: 8px;
-  padding: 10px 12px;
-  margin-bottom: 6px;
+  background: var(--color-surface);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  margin-bottom: 8px;
   font-size: 0.9rem;
+  box-shadow: var(--shadow-sm);
 }
 
 .woord-rij .woord-info {
   display: flex;
   flex-direction: column;
+  gap: 2px;
 }
 
 .woord-rij .woord-info .front {
   font-size: 1rem;
   margin-bottom: 0;
+  font-weight: 600;
 }
 
 .woord-rij .meta {
-  font-size: 0.75rem;
-  color: #888;
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
 .woord-rij .verwijder-btn {
   border: none;
   background: none;
-  color: #c62828;
+  color: var(--color-danger);
   cursor: pointer;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 600;
 }
 
 .backup-knoppen {
   display: flex;
   gap: 8px;
-  margin-top: 16px;
+  margin-top: 20px;
 }
 
 .backup-knoppen button {
   flex: 1;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background: white;
-  color: #444;
+  padding: 10px;
+  border: 1px solid #ddd8cf;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
   cursor: pointer;
   font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.backup-knoppen button:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
 }
 
 #toast {
   position: fixed;
-  bottom: 20px;
+  bottom: 24px;
   left: 50%;
   transform: translateX(-50%) translateY(20px);
-  background: #222;
+  background: #2b2b33;
   color: white;
-  padding: 10px 18px;
-  border-radius: 8px;
+  padding: 12px 20px;
+  border-radius: 999px;
   opacity: 0;
   transition: all 0.3s;
   pointer-events: none;
+  font-size: 0.9rem;
+  box-shadow: var(--shadow-md);
+  max-width: calc(100% - 40px);
+  text-align: center;
 }
 
 #toast.show {
@@ -279,9 +355,15 @@ section {
 .undo-btn {
   background: none;
   border: none;
-  color: #90caf9;
+  color: #a8b1ff;
   text-decoration: underline;
   cursor: pointer;
   font-size: inherit;
+  font-weight: 600;
   padding: 0;
+  margin-left: 4px;
+}
+
+.hidden {
+  display: none;
 }

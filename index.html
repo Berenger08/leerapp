@@ -8,12 +8,19 @@
 </head>
 <body>
   <header>
-    <h1>Dagelijkse Leerapp</h1>
+    <h1 id="app-titel">Dagelijkse Leerapp</h1>
     <div id="streak"></div>
     <div id="stats"></div>
   </header>
 
-  <main>
+  <section id="home">
+    <h2>Kies een categorie</h2>
+    <div id="categorie-lijst"></div>
+  </section>
+
+  <main id="app-view" class="hidden">
+    <button id="terug-btn">← Terug naar categorieën</button>
+
     <section id="hoofdwoorden">
       <h2>Vandaag</h2>
       <div id="hoofdwoorden-lijst"></div>
@@ -34,7 +41,6 @@
         <input id="nieuw-woord" type="text" placeholder="Woord">
         <input id="nieuw-betekenis" type="text" placeholder="Betekenis">
         <input id="nieuw-voorbeeld" type="text" placeholder="Voorbeeldzin (optioneel)">
-        <input id="nieuw-categorie" type="text" placeholder="Categorie (optioneel, standaard NL woord)">
         <button id="woord-toevoegen-btn">+ Woord toevoegen</button>
       </div>
 

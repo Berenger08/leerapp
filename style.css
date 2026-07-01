@@ -1,0 +1,169 @@
+body {
+  font-family: system-ui, sans-serif;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 16px;
+  background: #fafafa;
+  color: #222;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+h1 {
+  font-size: 1.3rem;
+}
+
+#streak {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+#stats {
+  font-size: 0.8rem;
+  color: #888;
+  margin-top: 2px;
+}
+
+h2 {
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #888;
+  margin-bottom: 8px;
+}
+
+section {
+  margin-bottom: 24px;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.card.fading {
+  opacity: 0;
+  transform: scale(0.97);
+}
+
+.category {
+  display: inline-block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: #888;
+  margin-bottom: 6px;
+}
+
+.front {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.back {
+  font-size: 0.95rem;
+  color: #444;
+  margin-bottom: 10px;
+}
+
+.back p {
+  margin: 0 0 8px 0;
+}
+
+.back .example {
+  font-style: italic;
+  color: #666;
+}
+
+.back.hidden {
+  display: none;
+}
+
+.reveal-btn {
+  background: none;
+  border: none;
+  color: #3366cc;
+  font-size: 0.85rem;
+  padding: 0;
+  margin-bottom: 10px;
+  cursor: pointer;
+  display: block;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.actions button {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  border-radius: 8px;
+  background: #eee;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.actions button:hover {
+  background: #ddd;
+}
+
+.actions button:disabled {
+  cursor: default;
+  opacity: 0.9;
+}
+
+.actions button.pressed-niet {
+  background: #e57373;
+  color: white;
+}
+
+.actions button.pressed-herhaal {
+  background: #64b5f6;
+  color: white;
+}
+
+.actions button.pressed-klaar {
+  background: #81c784;
+  color: white;
+}
+
+#nog-een-woord-btn {
+  margin-top: 8px;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  background: #333;
+  color: white;
+  cursor: pointer;
+}
+
+#toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: #222;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 8px;
+  opacity: 0;
+  transition: all 0.3s;
+  pointer-events: none;
+}
+
+#toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}

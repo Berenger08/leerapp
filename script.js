@@ -57,20 +57,30 @@ function addDays(dateStr, n) {
 function loadState() {
   const raw = localStorage.getItem(STORAGE_KEY);
   const saved = raw ? JSON.parse(raw) : null;
+  const customItems = (saved && saved.customItems) || [];
+  const deletedSeedIds = (saved && saved.deletedSeedIds) || [];
+
+  const definitions = [
+    ...SEED_ITEMS.filter(seed => !deletedSeedIds.includes(seed.id)),
+    ...customItems,
+  ];
 
   const items = {};
-  SEED_ITEMS.forEach(seed => {
-    const savedItem = saved && saved.items[seed.id];
-    items[seed.id] = {
-      ...seed,
+  definitions.forEach(def => {
+    const savedItem = saved && saved.items[def.id];
+    items[def.id] = {
+      ...def,
       step: savedItem ? savedItem.step : 'new',
       everShown: savedItem ? savedItem.everShown : false,
       nextDue: savedItem ? savedItem.nextDue : null,
     };
   });
 
-  if (saved) return { ...saved, items };
-  return { items, lastComputedDate: null, mainWordIds: [], streak: 0, lastOpenDate: null };
+  if (saved) return { ...saved, items, customItems, deletedSeedIds };
+  return {
+    items, customItems, deletedSeedIds,
+    lastComputedDate: null, mainWordIds: [], streak: 0, lastOpenDate: null,
+  };
 }
 
 function saveState(state) {
@@ -186,6 +196,74 @@ function handleNogEenWoord() {
   addNewHoofdwoord();
 }
 
+const STEP_LABELS = { new: 'nieuw', day: 'dag', week: 'week', month: 'maand', done: 'geleerd' };
+
+function addCustomWord(front, back, example, category) {
+  const id = 'custom-' + todayStr() + '-' + Math.random().toString(36).slice(2, 8);
+  const newItem = { id, category: category || 'NL woord', front, back, example: example || '' };
+  state.customItems.push(newItem);
+  state.items[id] = { ...newItem, step: 'new', everShown: false, nextDue: null };
+  saveState(state);
+  renderStats();
+  renderBeheer();
+}
+
+function deleteWord(id) {
+  delete state.items[id];
+  state.customItems = state.customItems.filter(it => it.id !== id);
+  if (SEED_ITEMS.some(s => s.id === id) && !state.deletedSeedIds.includes(id)) {
+    state.deletedSeedIds.push(id);
+  }
+  state.mainWordIds = state.mainWordIds.filter(mid => mid !== id);
+  saveState(state);
+  renderStats();
+  renderBeheer();
+  render();
+}
+
+function renderBeheer() {
+  const lijst = document.getElementById('woorden-lijst');
+  lijst.innerHTML = '';
+  const alleItems = Object.values(state.items).sort((a, b) => a.front.localeCompare(b.front));
+
+  if (alleItems.length === 0) {
+    lijst.textContent = 'Nog geen woorden.';
+    return;
+  }
+
+  alleItems.forEach(item => {
+    const rij = document.createElement('div');
+    rij.className = 'woord-rij';
+
+    const info = document.createElement('div');
+    info.className = 'woord-info';
+
+    const front = document.createElement('span');
+    front.className = 'front';
+    front.textContent = item.front;
+    info.appendChild(front);
+
+    const meta = document.createElement('span');
+    meta.className = 'meta';
+    meta.textContent = `${item.category} · ${STEP_LABELS[item.step]}`;
+    info.appendChild(meta);
+
+    rij.appendChild(info);
+
+    const verwijderBtn = document.createElement('button');
+    verwijderBtn.className = 'verwijder-btn';
+    verwijderBtn.textContent = 'Verwijderen';
+    verwijderBtn.onclick = () => {
+      if (confirm(`Weet je zeker dat je "${item.front}" wil verwijderen?`)) {
+        deleteWord(item.id);
+      }
+    };
+    rij.appendChild(verwijderBtn);
+
+    lijst.appendChild(rij);
+  });
+}
+
 function createCard(item) {
   const card = document.createElement('div');
   card.className = 'card';
@@ -292,6 +370,31 @@ function render() {
 }
 
 document.getElementById('nog-een-woord-btn').addEventListener('click', handleNogEenWoord);
+
+document.getElementById('beheer-toggle-btn').addEventListener('click', () => {
+  const beheer = document.getElementById('beheer');
+  beheer.classList.toggle('hidden');
+  if (!beheer.classList.contains('hidden')) renderBeheer();
+});
+
+document.getElementById('woord-toevoegen-btn').addEventListener('click', () => {
+  const front = document.getElementById('nieuw-woord').value.trim();
+  const back = document.getElementById('nieuw-betekenis').value.trim();
+  const example = document.getElementById('nieuw-voorbeeld').value.trim();
+  const category = document.getElementById('nieuw-categorie').value.trim();
+
+  if (!front || !back) {
+    showToast('Vul in ieder geval een woord en betekenis in.');
+    return;
+  }
+
+  addCustomWord(front, back, example, category);
+  document.getElementById('nieuw-woord').value = '';
+  document.getElementById('nieuw-betekenis').value = '';
+  document.getElementById('nieuw-voorbeeld').value = '';
+  document.getElementById('nieuw-categorie').value = '';
+  showToast(`"${front}" toegevoegd!`);
+});
 
 ensureDailyState();
 render();

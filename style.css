@@ -149,6 +149,79 @@ section {
   cursor: pointer;
 }
 
+#beheer-toggle-btn {
+  display: block;
+  width: 100%;
+  margin-bottom: 16px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: white;
+  color: #444;
+  cursor: pointer;
+}
+
+#beheer.hidden {
+  display: none;
+}
+
+.add-woord-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.add-woord-form input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+#woord-toevoegen-btn {
+  padding: 8px;
+  border: none;
+  border-radius: 8px;
+  background: #333;
+  color: white;
+  cursor: pointer;
+}
+
+.woord-rij {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  font-size: 0.9rem;
+}
+
+.woord-rij .woord-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.woord-rij .woord-info .front {
+  font-size: 1rem;
+  margin-bottom: 0;
+}
+
+.woord-rij .meta {
+  font-size: 0.75rem;
+  color: #888;
+}
+
+.woord-rij .verwijder-btn {
+  border: none;
+  background: none;
+  color: #c62828;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
 #toast {
   position: fixed;
   bottom: 20px;

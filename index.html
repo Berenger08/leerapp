@@ -24,6 +24,22 @@
       <h2>Herhalingen</h2>
       <div id="herhalingen-lijst"></div>
     </section>
+
+    <button id="beheer-toggle-btn">Alle woorden beheren</button>
+
+    <section id="beheer" class="hidden">
+      <h2>Alle woorden</h2>
+
+      <div class="add-woord-form">
+        <input id="nieuw-woord" type="text" placeholder="Woord">
+        <input id="nieuw-betekenis" type="text" placeholder="Betekenis">
+        <input id="nieuw-voorbeeld" type="text" placeholder="Voorbeeldzin (optioneel)">
+        <input id="nieuw-categorie" type="text" placeholder="Categorie (optioneel, standaard NL woord)">
+        <button id="woord-toevoegen-btn">+ Woord toevoegen</button>
+      </div>
+
+      <div id="woorden-lijst"></div>
+    </section>
   </main>
 
   <div id="toast"></div>
